@@ -38,7 +38,7 @@ const fetchImg = async() => {
    try{
       setIsLoading(true);
       const result = await imgApi.fetchImgItem()
-      setImgSet([...imgSet, ...result])
+      imgSet.length === 0 ? setImgSet([...result]) : setImgSet([...imgSet, ...result])
       result.length >= 12 ? setShowButton(true) : setShowButton(false)
     } catch(error){
       setError(true)
