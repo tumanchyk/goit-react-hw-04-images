@@ -15,30 +15,28 @@ const [selectedImg, setSelectedImg] = useState({});
 const [showButton, setShowButton] = useState(false);
 const [isLoading, setIsLoading] = useState(false);
 const [showModal, setShowModal] = useState(false);
-const [error, setError] = useState(false)
-
-
+const [error, setError] = useState(false);
 
   const onSearchForm = ({value}) =>{
-    const searchValue = value.trim();
     setError(false);
-    setImgSet([]);
     setShowButton(false)
+    const searchValue = value.trim();
     if(!searchValue.length)  return;
     imgApi.query = searchValue;
     imgApi.resetPage()
-    fetchImg()
+    fetchImg([])
   }
   
   const handleLoadMoreBtn =()=>{
-    fetchImg()
+    fetchImg(imgSet)
   }
 
-const fetchImg = async() => {
+const fetchImg = async(set) => {
    try{
       setIsLoading(true);
       const result = await imgApi.fetchImgItem()
-      imgSet.length === 0 ? setImgSet([...result]) : setImgSet([...imgSet, ...result])
+      setImgSet([...set, ...result])
+      console.log(imgSet);
       result.length >= 12 ? setShowButton(true) : setShowButton(false)
     } catch(error){
       setError(true)
